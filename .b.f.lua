@@ -8111,6 +8111,64 @@ spawn(function()
     end
 end)
 ]]
+
+
+spawn(function()
+    while wait() do
+        pcall(function()
+			for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+				if string.find(v.Name, "Terror") then
+					StatusTerror = "🟢"
+				else 
+					StatusTerror = "🔴"
+				end
+			end
+			
+			for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+				if string.find(v.Name, "Piranha") then
+					StatusSea = "🟢"
+				else 
+					StatusSea = "🔴"
+				end
+			end
+
+            for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+				if string.find(v.Name, "Leviathan") then
+					StatusLevi = "🟢"
+				else 
+					StatusLevi = "🔴"
+				end
+			end
+			
+			for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+				if string.find(v.Name, "Shark") then
+					StatusSea1 = "🟢"
+				else 
+					StatusSea1 = "🔴"
+				end
+			end
+			
+			for i, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+				if string.find(v.Name, "Fish Crew Member") then
+					StatusSea2 = "🟢"
+				else 
+			StatusSea2 = "🔴"
+		end
+    end
+ end)
+end
+end)
+
+task.spawn(function()
+    while wait() do
+        pcall(function()
+			StatusSeaRough:Set("Leviathan: "..StatusLevi.." | Terrorshark: "..StatusTerror.." | Piranha: "..StatusSea.."\n | Shark: "..StatusSea1.." | Fish Crew Member:"..StatusSea2) 
+		end)
+	end
+end)
+
+
+StatusSeaRough = SNt:AddLabel("Sea Event : Only Third Sea")
     
 SNt:AddToggle("Auto Kill Terrorshark",_G.Makori_gay,function(value)
 _G.Terrorshark = value
@@ -8675,23 +8733,27 @@ spawn(function()
         end)
     end
 end)
-]]
+
 SetSpeedBoat = 400
 
-SNt:AddSlider("Speed Boat",true , 0,40,80,100,150,250,350,1000,450, function(value)
+-- Perbaiki fungsi slider
+SNt:AddSlider("Speed Boat", 0,1000,400, function(value)
     SetSpeedBoat = value
 end)
-
+]]
+-- Fungsi toggle untuk mengaktifkan atau menonaktifkan Speed Boat
 SNt:AddToggle("Speed Boat", _G.SpeedBoat, function(state)
     _G.SpeedBoat = state
 end)
 
+-- RenderStepped untuk memperbarui kecepatan boat
 game:GetService("RunService").RenderStepped:Connect(function()
     if _G.SpeedBoat then
         for i, v in pairs(game:GetService("Workspace").Boats:GetChildren()) do
-            local seat = v:FindFirstChild("VehicleSeat")
+            local seat = v:FindFirstChild("VehicleSeat")  -- Cek apakah boat memiliki VehicleSeat
             if seat and game:GetService("Players").LocalPlayer.Character.Humanoid.Sit then
-                seat.MaxSpeed = SetSpeedBoat
+                -- Set MaxSpeed hanya jika player sedang duduk di boat
+                seat.MaxSpeed = 350
             end
         end
     end
@@ -8843,7 +8905,7 @@ spawn(function()
 
                 if targetModel and targetModel:FindFirstChild("VehicleSeat") then
                     -- Set kecepatan dari slider
-                    local speed = SetSpeedBoat or 400 -- Default speed jika SetSpeedBoat belum diatur
+                    local speed = SetSpeedBoat or 150 -- Default speed jika SetSpeedBoat belum diatur
 
                     -- Mengatur kecepatan boat melalui VehicleSeat
                     targetModel.VehicleSeat.MaxSpeed = speed
@@ -9065,23 +9127,53 @@ end)
          end
      end)
     
-     SNt:AddToggle("Auto Collect Azure Ember",_G.CollectAzure,function(value)
+     local collectPoint = game.Players.LocalPlayer.Character.HumanoidRootPart -- Titik pengumpulan Azure Ember
+     local collectRadius = 50 -- Radius untuk menarik Azure Ember
+     local autoCollectDistance = 5 -- Jarak agar ember otomatis terambil
+     
+     -- Inisialisasi _G.CollectAzure
+     _G.CollectAzure = _G.CollectAzure or false
+     
+     SNt:AddToggle("Auto Collect Azure Ember", _G.CollectAzure, function(value)
          _G.CollectAzure = value
-         end)
-    
-         spawn(function()
-             while wait() do
-                 if _G.CollectAzure then
-                     pcall(function()
-                         if game:GetService("Workspace"):FindFirstChild("AttachedAzureEmber") then
-                             fastpos(game:GetService("Workspace"):WaitForChild("EmberTemplate"):FindFirstChild("Part").CFrame)
+     end)
+     
+     spawn(function()
+         while wait() do
+             if _G.CollectAzure then
+                 pcall(function()
+                     -- Mencari semua Azure Ember di Workspace
+                     for _, ember in pairs(game:GetService("Workspace"):GetChildren()) do
+                         if ember:IsA("Model") and ember.Name == "AttachedAzureEmber" then
+                             local emberPart = ember:FindFirstChild("Part")
+                             
+                             if emberPart then
+                                 local distanceToCollectPoint = (collectPoint.Position - emberPart.Position).Magnitude
+                                 
+                                 if distanceToCollectPoint <= collectRadius then
+                                     -- Menarik ember ke titik pengumpulan
+                                     emberPart.CFrame = CFrame.new(collectPoint.Position)
+                                     
+                                     -- Mengecek apakah jarak ember ke karakter sudah cukup dekat untuk otomatis terambil
+                                     local distanceToPlayer = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - emberPart.Position).Magnitude
+                                     
+                                     if distanceToPlayer <= autoCollectDistance then
+                                         -- Memicu pengambilan
+                                         firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, emberPart, 0) -- Sentuh mulai
+                                         firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, emberPart, 1) -- Sentuh selesai
+                                     end
+                                 end
+                             end
                          end
-                     end)
-                 end
+                     end
+                 end)
              end
-         end)
-    
-     _G.SetToTradeAureEmber = 20
+         end
+     end)
+     
+     
+
+     _G.SetToTradeAureEmber = 24
      SNt:AddSlider("Set Trade Azure Ember", 10, 25, _G.SetToTradeAureEmber, function(v)
          _G.SetToTradeAureEmber = v
      end)

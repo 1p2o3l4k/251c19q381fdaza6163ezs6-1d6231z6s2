@@ -1,9 +1,9 @@
 getgenv().Games = {
-    [2753915549] = "https://37uzdt26sof4b.ahost.marscode.site/bf.lua", -- Bl 1
-    [4442272183] = "https://37uzdt26sof4b.ahost.marscode.site/bf.lua", -- Bl 2
-    [7449423635] = "https://37uzdt26sof4b.ahost.marscode.site/bf.lua", -- Bl 3
-    [10260193230] = "https://37uzdt26sof4b.ahost.marscode.site/meme.lua", -- Memesea
-    [13772394625] = "https://37uzdt26sof4b.ahost.marscode.site/bladebll.lua", -- Blade Ball
+    [2753915549] = "https://raw.githubusercontent.com/1p2o3l4k/251c19q381fdaza6163ezs6-1d6231z6s2/refs/heads/main/.b.f.lua", -- Bl 1
+    [4442272183] = "https://raw.githubusercontent.com/1p2o3l4k/251c19q381fdaza6163ezs6-1d6231z6s2/refs/heads/main/.b.f.lua", -- Bl 2
+    [7449423635] = "https://raw.githubusercontent.com/1p2o3l4k/251c19q381fdaza6163ezs6-1d6231z6s2/refs/heads/main/.b.f.lua", -- Bl 3
+    [10260193230] = "https://raw.githubusercontent.com/1p2o3l4k/251c19q381fdaza6163ezs6-1d6231z6s2/refs/heads/main/.me.534.lua", -- Memesea
+    [13772394625] = "https://raw.githubusercontent.com/1p2o3l4k/251c19q381fdaza6163ezs6-1d6231z6s2/refs/heads/main/bld.bll.lua", -- Blade Ball
     [15744137588] = "", --Blade Slayer
     [11520107397] = "https://37uzdt26sof4b.ahost.marscode.site/mekmek/slap-battle.lua", --Slap Battle 1
     [6403373529] = "hhttps://37uzdt26sof4b.ahost.marscode.site/mekmek/slap-battle.lua", --Slap Battle 2
